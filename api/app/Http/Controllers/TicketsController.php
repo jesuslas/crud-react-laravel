@@ -10,10 +10,15 @@ class TicketsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @return \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $userId = $request->query("userId");
+        if($userId){
+            return Tickets::with("user")->where("user_id",$userId)->get();
+        }
         return Tickets::with("user")->get();
     }
 
@@ -36,8 +41,8 @@ class TicketsController extends Controller
     public function store(Request $request)
     {
         $tickets = new Tickets;
-        $tickets->ticket_pedido = $request->ticketPedido;
-        $tickets->user_id = $request->userId;
+        $tickets->ticket_pedido = json_decode($request->body)->ticketPedido;
+        $tickets->user_id = json_decode($request->body)->userId;
         $tickets->save();
         return $tickets;
     }
@@ -84,6 +89,8 @@ class TicketsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ticket = Tickets::findOrFail($id);
+        $ticket->delete();
+        return $ticket;
     }
 }

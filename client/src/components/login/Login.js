@@ -43,7 +43,7 @@ const Login = props => {
       const resp = await signIn(user, password);
       console.log("resp", resp);
       props.userSignIn(resp.data);
-      this.props.history.push(`/dashboad`);
+      props.history.push(`/dashboad`);
     } catch (error) {
       setError("Usuario no encontrado");
     }
@@ -81,6 +81,11 @@ const Login = props => {
           id="password"
           autoComplete="current-password"
           onChange={({ target: { value } }) => setPassword(value)}
+          onKeyDown={e => {
+            if (e.key === "Enter") {
+              login();
+            }
+          }}
         />
         {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -133,6 +138,7 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(Login));
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
