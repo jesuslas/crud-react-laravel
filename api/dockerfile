@@ -1,0 +1,8 @@
+FROM lorisleiva/laravel-docker
+
+
+WORKDIR /laravel-api
+
+EXPOSE 8000
+
+CMD php artisan serve
