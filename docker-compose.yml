@@ -1,0 +1,51 @@
+version: "3.3"
+
+services:
+  db:
+    image: mysql
+    container_name: l-db
+    ports:
+      - "3307:3306"
+    restart: always
+  api:
+    image: lorisleiva/laravel-docker
+    container_name: l-api
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
+        reservations:
+          memory: 512MB
+    build:
+      context: ./api 
+      dockerfile: ./dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8585:8000"
+    volumes:
+      - "./api:/api"  
+    links:
+      - db
+  client:
+    image: node:stretch-slim
+    container_name: l-client
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1024MB
+        reservations:
+          memory: 1024MB
+    ports:
+      - "3000:3000"
+    build:
+      context: ./client
+      dockerfile: ./dockerfile
+    volumes:
+      - "./client:/client"    
+    links:
+      - api
+    depends_on:
+      - api  

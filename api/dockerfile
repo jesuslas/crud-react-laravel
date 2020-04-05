@@ -1,8 +1,13 @@
 FROM lorisleiva/laravel-docker
 
+WORKDIR /app
 
-WORKDIR /laravel-api
+COPY composer.lock composer.json /app/
 
-EXPOSE 8000
+RUN composer install  
 
-CMD php artisan serve
+COPY . /app
+
+EXPOSE 8585
+
+CMD ["/usr/local/bin/php", "artisan serve --host 0.0.0.0"]
