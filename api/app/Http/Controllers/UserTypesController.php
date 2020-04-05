@@ -17,7 +17,6 @@ class UserTypesController extends Controller
     {
         return UserTypes::get();
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -37,8 +36,9 @@ class UserTypesController extends Controller
     public function store(Request $request, Response $response)
     {
         $types = new UserTypes;
-        $types->name = $request->name;
+        $types->name = json_decode($request->body)->name;
         $types->save();
+
         return $types;
     }
 
@@ -74,7 +74,7 @@ class UserTypesController extends Controller
     public function update(Request $request, $id)
     {
       $usertypes = UserTypes::findOrFail($id);
-      $usertypes->name = $request->name?$request->name:$usertypes->name;
+      $usertypes->name = property_exists(json_decode($request->body),"name") ? json_decode($request->body)->name: $usertypes->name;
       $usertypes->save();
       
       return $usertypes;

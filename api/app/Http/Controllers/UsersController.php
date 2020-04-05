@@ -36,10 +36,10 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $user = new Users;
-         $user->name = $request->name;
-         $user->password = $request->password;
-         $user->email = $request->email;
-         $user->userType_id = $request->userTypes;
+         $user->name = json_decode($request->body)->name;
+         $user->password = json_decode($request->body)->password;
+         $user->email = json_decode($request->body)->email;
+         $user->userType_id = json_decode($request->body)->userTypes;
          $user->save();
          return $user;
     }
@@ -75,14 +75,16 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $users = Users::findOrFail($id);
-        $users->name = $request->name? $request->name: $users->name;
-        $users->password = $request->password ? $request->password:$users->password ;
-        $users->email = $request->email ? $request->email: $users->email;
-        $users->userType_id = $request->userType? $request->userType: $users->userType_id;
+        $users->name = property_exists(json_decode($request->body),"name") ? json_decode($request->body)->name: $users->name;
+        $users->password = property_exists(json_decode($request->body),"password") ? json_decode($request->body)->password: $users->password;
+        $users->email = property_exists(json_decode($request->body),"email")? json_decode($request->body)->email: $users->email;
+        $users->userType_id = property_exists(json_decode($request->body),"userTypes")? json_decode($request->body)->userTypes: $users->userType_id;
         $users->save();
         
         return $users;
+        
     }
 
     /**
