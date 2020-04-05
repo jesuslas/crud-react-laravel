@@ -1,0 +1,24 @@
+{
+  "name": "app-tickets",
+  "version": "1.0.0",
+  "description": "App react laravel mysql",
+  "main": "index.js",
+  "scripts": {
+    "composer": "docker-compose build && docker-compose up -d",
+    "create:load:class": "docker exec -it lp composer dump-autoload",
+    "create:db": "docker exec -it lp php artisan migrate:refresh --force",
+    "create:seed": "docker exec -it lp php artisan db:seed",
+    "api:init":"npm run create:load:class && npm run create:db && npm run create:seed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesuslas/crud-react-laravel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesuslas/crud-react-laravel/issues"
+  },
+  "homepage": "https://github.com/jesuslas/crud-react-laravel#readme"
+}

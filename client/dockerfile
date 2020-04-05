@@ -1,11 +1,9 @@
-FROM node:12.2.0
+FROM node:12.2.0-alpine
 
 COPY ./package*.json /client/
 
 WORKDIR /client
-
 RUN npm ci 
-
 COPY . /client/
 
 EXPOSE 3333

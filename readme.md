@@ -1,16 +1,31 @@
-### Estos conmandos estan construidos para ser ejecutados en windows pront
-
-### comando utilis
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'
-docker logs mysql | tail -n 2
-mysql -uroot -pmanager -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'"
+# Prueba de concepto REACT + LARAVEL + MYSQL
 
 
-# Sen construyen los contenedores para el escenario
-
-## crear container para mysql
 ### Requisitos previos:
 - docker 
+
+## Sen contruye el escenario utilizando docker-compose
+### se contruyen los containers del escenario completo
+```bash  
+npm run composer
+```
+### Se inicializa el Api con la data y las tablas de la db
+```bash  
+npm run api:init
+```
+
+## los pueros expuestos en el escenario con composer son: 
+- Para la DB localhost:3307
+- Para el API localhost:8585
+- Para el CLIENT localhost:3333
+
+
+
+
+# Sen construyen los contenedores para el escenario manualmente
+### Estos conmandos estan construidos para ser ejecutados en windows pront
+## crear container para mysql
+
 
 ```bash   
 docker run --name mysql-db -p 3307:3306 --memory=512MB --memory-swap=512MB -e MYSQL_ROOT_PASSWORD=manager -e MYSQL_DATABASE=laravel -d mysql --default-authentication-plugin=mysql_native_password
@@ -22,8 +37,14 @@ docker run -d --name l-api --link mysql-db --volume=%cd%/api:/laravel-api -w=/ap
 ```
 ### crear container con el laravel client
 ```bash  
-docker run -d --name l-client --link laravel-api --volume=%cd%/client:/client -w=/client -p 3333:3000 --memory=4024MB --memory-swap=4024MB  node:12.2.0 npm start
+docker run -d --name l-client --link laravel-api --volume=%cd%/client:/client -w=/client -p 3333:3000 --memory=4024MB --memory-swap=4024MB  node:12.2.0-alpine npm start
 ```
+
+
+### comando utilis
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'
+docker logs mysql | tail -n 2
+mysql -uroot -pmanager -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'"
 
 ### arrancar servidor
 php artisan serve --host 0.0.0.0
