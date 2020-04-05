@@ -32,3 +32,5 @@ php artisan make:controller TicketsController -r
 
 ### router list
 php artisan route:list
+
+https://www.keiron.cl/test/react-laravel/

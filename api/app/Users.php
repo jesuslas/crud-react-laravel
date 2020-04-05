@@ -15,14 +15,15 @@ class Users extends Model
     protected $fillable = [
         'name', 'email', 'password',"userType_id"
     ];
-     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    // ESTO NO DE DEBE HACER PERO LO HARE PORQUE NO HAY SISTEMA DE CAMBIO DE CONTRASEÑA
+    //  /**
+    //  * The attributes that should be hidden for arrays.
+    //  *
+    //  * @var array
+    //  */
+    // protected $hidden = [
+    //     'password', 'remember_token',
+    // ];
 
     /**
      * The attributes that should be cast to native types.

@@ -1,26 +1,38 @@
-import React, { Component } from "react";
+import React, { memo } from "react";
 import { Redirect, Switch, Router } from "react-router-dom";
+import RouteWithSubRoutes from "./RouteWithSubRoutes";
 import { createBrowserHistory } from "history";
-
-import { Dashboard, MyTickets, Logout } from "../../pages/index";
-
+import { Dashboard, Logout } from "../../pages/index";
 const hist = createBrowserHistory();
-
-class RouterDashboard extends Component {
-  render() {
-    const Route = this.props.route;
-
-    return (
-      <Router history={hist}>
-        <Switch>
-          <Route path="/dashboard" exact component={Dashboard} />
-          <Route path="/mytickets" exact component={MyTickets} />
-          <Route path="/logout" exact component={Logout} />
-          <Redirect to="/dashboard" />
-        </Switch>
-      </Router>
-    );
-  }
+function RouterApp() {
+  const routes = [
+    {
+      path: "/dashboard",
+      component: Dashboard,
+      name: "Dashboard",
+      routes: [
+        {
+          name: "Tickets",
+          path: "/dashboard/tickets"
+        },
+        {
+          name: "Users",
+          path: "/dashboard/usets"
+        }
+      ]
+    },
+    { path: "/logout", name: "Logout", component: Logout }
+  ];
+  return (
+    <Router history={hist}>
+      <Switch>
+        {routes.map(route => (
+          <RouteWithSubRoutes key={route.path} {...route} />
+        ))}
+        <Redirect to="/dashboard" />
+      </Switch>
+    </Router>
+  );
 }
 
-export default RouterDashboard;
+export default memo(RouterApp, (prev, next) => prev.user.id === next.user.id);

@@ -78,7 +78,13 @@ class TicketsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ticket = Tickets::findOrFail($id);
+        $ticket->ticket_pedido = property_exists(json_decode($request->body),"ticketPedido") ? json_decode($request->body)->ticketPedido: $ticket->ticket_pedido;
+        $ticket->user_id = property_exists(json_decode($request->body),"userId") ? json_decode($request->body)->userId: $ticket->user_id;
+        $ticket->status = property_exists(json_decode($request->body),"status")? json_decode($request->body)->status: $ticket->status;
+        $ticket->save();
+        
+        return $ticket;
     }
 
     /**

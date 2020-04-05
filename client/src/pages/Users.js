@@ -9,66 +9,69 @@ import {
   customBodyRender,
   renderSelectUser,
   renderSelectTicketName,
-  renderSelectStatus
+  renderPassword
 } from "../components/table/cellCustomRenders";
 import {
-  addTickets,
-  deleteTickets,
-  getAllUsers,
-  updateTicket
+  addUser,
+  deleteUser,
+  getAllUserTypes,
+  updateUser
 } from "../service/api.service";
-
-const MyTickets = props => {
-  const { tickets, userId, tick, setTick, isAdmin } = props;
-  const [users, setUsers] = useState([]);
+const Users = props => {
+  const { users, userId, tick, setTick, isAdmin } = props;
+  const [userTypes, setUserTypes] = useState([]);
+  console.log("userTypes", userTypes);
   const [editCellRow, setEditCellRow] = useState({
     cell: null,
     row: null
   });
-  const options = {
-    display: false
-  };
   const columns = [
     {
-      name: "ticket Id",
+      name: "Id"
+    },
+    {
+      name: "userTypeId",
       options: {
-        display: true
+        display: false
       }
     },
     {
-      name: "userId",
-      options
-    },
-    {
-      name: "Assigned to",
+      name: "Name",
       options: {
-        customBodyRender:
-          isAdmin &&
-          customBodyRender(renderSelectUser, {
-            users,
-            tick,
-            setTick,
-            editCellRow,
-            setEditCellRow,
-            edit: updateTicket,
-            colunm: "userId"
-          })
+        customBodyRender: customBodyRender(renderSelectTicketName, {
+          tick,
+          setTick,
+          editCellRow,
+          setEditCellRow,
+          edit: updateUser,
+          colunm: "name"
+        })
       }
     },
     {
-      name: "Ticket",
+      name: "Email",
       options: {
-        customBodyRender:
-          isAdmin &&
-          customBodyRender(renderSelectTicketName, {
-            users,
-            tick,
-            setTick,
-            editCellRow,
-            setEditCellRow,
-            edit: updateTicket,
-            colunm: "ticketPedido"
-          })
+        customBodyRender: customBodyRender(renderSelectTicketName, {
+          tick,
+          setTick,
+          editCellRow,
+          setEditCellRow,
+          edit: updateUser,
+          colunm: "email"
+        })
+      }
+    },
+    {
+      name: "Password",
+      options: {
+        customBodyRender: customBodyRender(renderPassword, {
+          tick,
+          setTick,
+          editCellRow,
+          setEditCellRow,
+          edit: updateUser,
+          colunm: "password"
+        })
       }
     },
     {
@@ -78,29 +81,32 @@ const MyTickets = props => {
       }
     },
     {
-      name: "Status",
+      name: "Role",
       options: {
         customBodyRender:
           isAdmin &&
-          customBodyRender(renderSelectStatus, {
+          customBodyRender(renderSelectUser, {
+            users: userTypes,
             tick,
             setTick,
             editCellRow,
             setEditCellRow,
-            edit: updateTicket,
-            colunm: "status"
+            edit: updateUser,
+            colunm: "userTypes"
           })
       }
     }
   ];
-  const data = (tickets || []).map(
+  const data = (users || []).map(
     ({
-      user: { id: userId, name: userName },
-      id: ticketid,
-      ticket_pedido,
+      id,
+      userType_id,
+      name,
+      email,
+      password,
       created_at,
-      status
-    }) => [ticketid, userId, userName, ticket_pedido, created_at, status]
+      user_types: { name: role }
+    }) => [id, userType_id, name, email, password, created_at, role]
   );
 
   const classes = useStyles();
@@ -108,12 +114,12 @@ const MyTickets = props => {
     return (
       <p>
         {isAdmin && (
-          <Tooltip title="Create Ticket">
+          <Tooltip title="Create User">
             <Icon
               className={classes.icon}
               color="primary"
               onClick={async () => {
-                await addTickets({}, userId);
+                await addUser({}, userId);
                 setTick(tick + 1);
               }}
             >
@@ -141,43 +147,39 @@ const MyTickets = props => {
     download: false,
     pagination: false,
     onCellClick: (_, { colIndex, rowIndex }) => {
-      console.log("colIndex", colIndex);
       setEditCellRow({ cell: colIndex, row: rowIndex });
     },
     customToolbar: () => <Toolbar />,
     search: false,
     onRowsDelete: ({ data }) => {
-      let ticketsIds = [];
+      let usersId = [];
       data.forEach(({ index }) => {
-        ticketsIds = [...ticketsIds, tickets[index].id];
+        usersId = [...usersId, users[index].id];
       });
-      const results = ticketsIds.reduce(async (allPromise, tickect) => {
+      const results = usersId.reduce(async (allPromise, user) => {
         const allResults = await allPromise;
-        const result = await deleteTickets(tickect);
+        const result = await deleteUser(user);
         return [...allResults, result];
       }, Promise.resolve([]));
-      if (results.length === ticketsIds.length) {
+      if (results.length === usersId.length) {
         setTick(tick + 1);
       }
     }
   };
-  const getUsers = async () => {
+  const getUserTypes = async () => {
     try {
-      const { data } = await getAllUsers();
-      setUsers(data);
+      const { data } = await getAllUserTypes();
+      setUserTypes(data);
     } catch (error) {
       console.log("error", error);
     }
   };
-  useEffect(
-    () => {
-      getUsers();
-    },
-    [editCellRow]
-  );
+  useEffect(() => {
+    getUserTypes();
+  }, []);
   return (
     <MUIDataTable
-      title={"Tickets"}
+      title={"Users"}
       data={data}
       columns={columns}
       options={settings}
@@ -189,4 +191,4 @@ const useStyles = makeStyles(() => ({
     cursor: "pointer"
   }
 }));
-export default withRouter(MyTickets);
+export default withRouter(Users);
