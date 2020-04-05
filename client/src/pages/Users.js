@@ -20,7 +20,6 @@ import {
 const Users = props => {
   const { users, userId, tick, setTick, isAdmin } = props;
   const [userTypes, setUserTypes] = useState([]);
-  console.log("userTypes", userTypes);
   const [editCellRow, setEditCellRow] = useState({
     cell: null,
     row: null

@@ -9,6 +9,7 @@ store.subscribe(() => {
 });
 console.log("user", user);
 export const signIn = (user, password) => {
+  console.log('baseUrl',baseUrl);
   return axios.post(`${baseUrl}/login`, {
     method: "POST",
     body: JSON.stringify({ user, password })
@@ -65,7 +66,7 @@ export const deleteUserTypes = userTypeId => {
 };
 
 export const deleteUser = userId => {
-  return axios.delete(`${baseUrl}/tickets/${userId}`);
+  return axios.delete(`${baseUrl}/users/${userId}`);
 };
 
 export const updateTicket = (ticketId, properties) => {

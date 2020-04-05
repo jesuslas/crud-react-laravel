@@ -1,0 +1,68 @@
+version: "3.5"
+
+services:
+  db:
+    image: mysql
+    container_name: ld
+    ports:
+      - "3307:3306"
+    command: --default-authentication-plugin=mysql_native_password  
+    environment:
+      MYSQL_ROOT_PASSWORD: manager
+      MYSQL_DATABASE: laravel
+    restart: always
+    tty: true
+  
+  api:
+    image: php:7
+    container_name: lp
+    restart: always
+    privileged: true
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
+        reservations:
+          memory: 512MB
+    build:
+      context: ./api 
+      dockerfile: ./dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8585:8000"
+    links:
+      - db
+    volumes:
+      - "./api:/api"  
+      - "/api/vendor"  
+    tty: true  
+
+
+  client:
+    image: node:12.2.0-alpine
+    container_name: lc
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 4024MB
+        reservations:
+          memory: 4024MB
+    environment:
+      NODE_ENV: development
+    stdin_open: true  
+    ports:
+      - "3333:3000"
+    build:
+      context: ./client
+      dockerfile: ./dockerfile
+    volumes:
+      - "./client:/client"    
+      - "/client/node_modules"    
+    links:
+      - api
+    depends_on:
+      - api  
+    tty: true  
+    

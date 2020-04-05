@@ -1,8 +1,30 @@
-FROM lorisleiva/laravel-docker
+# FROM lorisleiva/laravel-docker
 
+# WORKDIR /app
 
-WORKDIR /laravel-api
+# # COPY composer.lock composer.json /app/
+# COPY . /app
+# COPY .env.example /app/.env
 
-EXPOSE 8000
+# RUN composer install --ignore-platform-reqs
 
-CMD php artisan serve
+# RUN chmod -R 775 artisan
+# RUN ls -la
+
+# EXPOSE 8585
+# # ENTRYPOINT ["/usr/local/bin/php"]
+# # CMD ["php","artisan", "serve", "--host 0.0.0.0"]
+# CMD php artisan serve --host=0.0.0.0
+
+FROM php:7
+RUN apt-get update -y && apt-get install -y openssl zip unzip git
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+WORKDIR /api
+COPY . /api
+COPY .env.example /api/.env
+RUN ls -la
+RUN composer install
+
+CMD php artisan serve --host=0.0.0.0
+EXPOSE 8585
