@@ -1,5 +1,6 @@
-# Prueba de concepto REACT + LARAVEL + MYSQL
-
+# Prueba de concepto REACT + LARAVEL + MYSQL en DOCKER
+### Aplicación de tickets con perfil de usuarios desarrollada en REACT para el FRONT, LARAVEL para BACK y MYSQL en la Base de datos. Desplegado completamente en
+### contenedores docker
 
 ### Requisitos previos:
 - docker 
@@ -18,8 +19,6 @@ npm run api:init
 - Para la DB localhost:3307
 - Para el API localhost:8585
 - Para el CLIENT localhost:3333
-
-
 
 
 # Sen construyen los contenedores para el escenario manualmente

@@ -85,12 +85,10 @@ export const renderPassword = props => {
 
 export const customBodyRender = (render, props) => (value, tableMeta) => {
   const { rowData, rowIndex, columnIndex } = tableMeta;
-  console.log("rowData", rowData);
   const { editCellRow, setEditCellRow, setTick, tick, colunm, edit } = props;
   const { row, cell } = editCellRow;
   const ticketId = rowData[0];
   const userId = rowData[1];
-  console.log("userId", userId);
   const isCell = rowIndex === row && columnIndex === cell;
   const onSave = async (oldValue, newValue) => {
     setEditCellRow({ cell: undefined, row: undefined });
