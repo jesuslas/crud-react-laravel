@@ -5,7 +5,9 @@
 La aplicación consta de un Login para autenticar los usuarios, luego al ingresar se muestra una tabla dode se administraran todas las funcionalidades de la aplicación. 
 - Permite Cear, editar, listar y borrar los usuario de la aplicación 
 - Crear, listar, editar y borrar los tickets 
-- Crear, listar, editar y borrar los roles del usuario
+- Crear, listar, editar y borrar los roles del 
+
+![Dashboard](/client/public/dashboard.png)
 
 ### Requisitos previos:
 - git
