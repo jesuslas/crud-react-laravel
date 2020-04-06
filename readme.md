@@ -6,6 +6,9 @@ La aplicación consta de un Login para autenticar los usuarios, luego al ingresa
 - Permite Cear, editar, listar y borrar los usuario de la aplicación 
 - Crear, listar, editar y borrar los tickets 
 - Crear, listar, editar y borrar los roles del 
+- Solo el usuarios con role admin pueden modificar los datos de todos los objetos
+- El usuario con role user solo puede modificar el estatus de sus propios tickets
+
 <p align="center">
   <img  src="https://raw.githubusercontent.com/jesuslas/crud-react-laravel/master/client/public/login.PNG">
 </p>
