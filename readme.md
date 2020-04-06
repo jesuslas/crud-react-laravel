@@ -6,9 +6,12 @@ La aplicación consta de un Login para autenticar los usuarios, luego al ingresa
 - Permite Cear, editar, listar y borrar los usuario de la aplicación 
 - Crear, listar, editar y borrar los tickets 
 - Crear, listar, editar y borrar los roles del 
-
-![login](https://raw.githubusercontent.com/jesuslas/crud-react-laravel/master/client/public/login.PNG)
-![Dashboard](https://raw.githubusercontent.com/jesuslas/crud-react-laravel/master/client/public/dashboard.PNG)
+<p align="center">
+  <img  src="https://raw.githubusercontent.com/jesuslas/crud-react-laravel/master/client/public/login.PNG">
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jesuslas/crud-react-laravel/master/client/public/dashboard.PNG">
+</p>
 
 ### Requisitos previos:
 - git
