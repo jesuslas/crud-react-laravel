@@ -81,7 +81,6 @@ const MyTickets = props => {
       name: "Status",
       options: {
         customBodyRender:
-          isAdmin &&
           customBodyRender(renderSelectStatus, {
             tick,
             setTick,
